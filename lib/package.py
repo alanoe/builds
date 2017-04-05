@@ -174,7 +174,8 @@ class Package(object):
 
         # This is kept for backwards compatibility with older
         # 'versions' repositories.
-        if self.clone_url:
+        # hwdata git repository no longer exists, so we should not try to download it
+        if self.clone_url and self.name != 'hwdata':
             self._download_source_code()
 
         self._download_build_files()
