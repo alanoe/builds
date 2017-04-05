@@ -104,8 +104,8 @@ def update_versions_in_readme(versions_repo, distro, packages_names):
              ", ".join(packages_names))
     pm = packages_manager.PackagesManager(packages_names)
     # TODO: this is coupled with RPM-based Linux distributions
-    pm.prepare_packages(packages_class=rpm_package.RPM_Package,
-                        download_source_code=False, distro=distro)
+    pm.load_packages_metadata(packages_class=rpm_package.RPM_Package,
+                        distro=distro)
 
     html_table = create_html_table(pm.packages)
     output_readme_path = os.path.join(versions_repo.working_tree_dir,

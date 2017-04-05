@@ -81,9 +81,9 @@ class BuildManager(object):
         force_rebuild = CONF.get('build_packages').get('force_rebuild')
         try:
             # TODO: should not restrict building to RPM packages
-            self.packages_manager.prepare_packages(
+            self.packages_manager.load_packages_metadata(
                 packages_class=RPM_Package, distro=self.distro,
-                download_source_code=False, force_rebuild=force_rebuild)
+                force_rebuild=force_rebuild)
         # distro related issues
         except (exception.DistributionNotSupportedError,
                 exception.DistributionVersionNotSupportedError,

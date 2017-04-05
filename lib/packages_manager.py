@@ -30,10 +30,10 @@ class PackagesManager(object):
         self.packages_names = packages_names
         self.packages = []
 
-    def prepare_packages(self, packages_class=Package,
-                         download_source_code=True, **packages_keyword_args):
+    def load_packages_metadata(self, packages_class=Package,
+                         **packages_keyword_args):
         """
-        Load packages data and optionally download files.
+        Load packages metadata
         Use packages keyword args parameter to pass extra parameters to
         an inherited class.
         """
@@ -45,8 +45,6 @@ class PackagesManager(object):
                 LOG.error("Failed to load the %s package metadata from the git repository. "
                           "See the logs for more information" % package_name)
                 raise
-            if download_source_code:
-                package.download_files()
             self.packages.append(package)
 
 

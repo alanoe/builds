@@ -170,8 +170,8 @@ def run(CONF):
     LOG.info("Creating release notes with packages: {}".format(
         ", ".join(packages_names)))
     package_manager = packages_manager.PackagesManager(packages_names)
-    package_manager.prepare_packages(packages_class=rpm_package.RPM_Package,
-                                     download_source_code=False, distro=distro)
+    package_manager.load_packages_metadata(packages_class=rpm_package.RPM_Package,
+                                     distro=distro)
 
     repositories_dir_path = os.path.join(
         CONF.get('common').get('work_dir'), REPOSITORIES_DIR)

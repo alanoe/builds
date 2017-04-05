@@ -95,8 +95,8 @@ def update_metapackage(
              "{}".format(", ".join(packages_names)))
     pm = packages_manager.PackagesManager(packages_names)
     # TODO: this is coupled with RPM-based Linux distributions
-    pm.prepare_packages(packages_class=rpm_package.RPM_Package,
-                        download_source_code=False, distro=distro)
+    pm.load_packages_metadata(packages_class=rpm_package.RPM_Package,
+                        distro=distro)
 
     LOG.info("Updating release package YAML file")
     YAML_START_DELIMITER = "    install_dependencies:"

@@ -221,8 +221,8 @@ def run(CONF):
     LOG.info("Checking for updates in packages versions: %s",
              ", ".join(packages_to_update_names))
     pm = packages_manager.PackagesManager(packages_to_update_names)
-    pm.prepare_packages(packages_class=rpm_package.RPM_Package,
-                        download_source_code=False, distro=distro)
+    pm.load_packages_metadata(packages_class=rpm_package.RPM_Package,
+                        distro=distro)
 
     for pkg in pm.packages:
         pkg.lock()
