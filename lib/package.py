@@ -17,6 +17,7 @@ from functools import total_ordering
 import fcntl
 import logging
 import os
+import shutil
 import urllib2
 import yaml
 
@@ -256,9 +257,23 @@ class Package(object):
         for url in self.download_build_files:
             f = urllib2.urlopen(url)
             data = f.read()
-            filename = os.path.join(self.build_files, url.split('/')[-1])
-            with open(filename, "wb") as file_data:
+            filepath = os.path.join(self.build_files, url.split('/')[-1])
+            with open(filepath, "wb") as file_data:
                 file_data.write(data)
+
+            # backwards compatibility: docker-storage-setup tar.gz file name and
+            # name of the root directory inside it do not match, fix this
+            if self.name == "docker" and "docker-storage-setup" in url.split('/')[-1]:
+                tmp_dir = os.path.join(self.build_files, "tmp")
+                os.makedirs(tmp_dir)
+                utils.extract_tar(filepath, tmp_dir)
+                os.remove(filepath)
+                for subdir in os.listdir(tmp_dir):
+                    subdir_path = os.path.join(tmp_dir, subdir)
+                    new_subdir_path = os.path.join(os.path.dirname(filepath), os.path.splitext(os.path.basename(filepath)))
+                    os.rename(subdir_path, new_subdir_path)
+                utils.create_tar(filepath, ".", base_source_dir=tmp_dir)
+                shutil.rmtree(tmp_dir)
 
     def lock(self):
         """

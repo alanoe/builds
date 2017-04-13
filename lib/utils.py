@@ -209,3 +209,33 @@ def force_symlink(target_path, link_path):
         if e.errno == errno.EEXIST:
             os.remove(link_path)
             os.symlink(target_path, link_path)
+
+def create_tar(target_file, source_dir, base_source_dir=None):
+    """
+    Create a compressed tar (tar.gz) file
+
+    Args:
+        target_file (str): target tar file path
+        source_dir (str): source directory path
+        base_source_dir (dir): base source directory path
+    """
+
+    # @IMPROVEMENT use python to create tar instead
+    cmd = "tar -zcvf %s" % target_file
+    if base_source_dir:
+        cmd += " -C %s" % base_source_dir
+    cmd += " %s" % source_dir
+
+    run_command(cmd)
+
+def extract_tar(source_file, target_dir):
+    """
+    Extract a compressed tar (tar.gz) file to a directory
+
+    Args:
+        source_file (str): source tar file path
+        target_dir (str): target directory path
+    """
+
+    # @IMPROVEMENT use python to extract tar instead
+    run_command("tar -zxvf %s -C %s" % (source_file, target_dir))
